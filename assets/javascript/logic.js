@@ -7,12 +7,24 @@ function displayGif() {
         method: "GET"
     }).then(function(response) {
         console.log(response);
+        var results = response.data;
         for (var i = 0; i < 10; i++) {
-            var rating = "<div class='ratings'> Rating: " + (response.data[i].rating) + "</div>"
-           var image= rating + '<img src = " ' + response.data[i].images.original_still.url +
-           '"data-still=" ' + response.data[i].images.original_still.url + '" data-animate=" ' +
-           response.data[i].images.original.url + '" data-state="still" class="movImage" style= "width:250px; height: 250 px">'; 
-           $(".gif-view").append(image);
+            var dataImage = $("<img>");
+            dataImage.attr("src", results[i].images.fixed_height_still.url);
+            dataImage.attr("data-still", results[i].images.fixed_height_still.url);
+            dataImage.attr("data-animate", results[i].images.fixed_height.url);
+            dataImage.addClass("gif");
+            dataImage.attr("data-state", "still");
+
+
+            var newItemdiv = $('<div class="newItem">');
+            var gifRating = results[i].rating;
+            var divRating = $("<p>").text("Rating: " + gifRating);
+            
+            newItemdiv.append(divRating);
+            newItemdiv.append(dataImage);
+
+            $(".gif-view").prepend(newItemdiv);
     }});
 };
 $(".gif-view").on("click", ".gif", function() {
